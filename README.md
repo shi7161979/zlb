@@ -20,6 +20,7 @@ curl -X PUT --data="" "http://127.0.0.8500/v1/kv/zlb_domain/a.com/192.168.13.21"
 curl -X PUT "http://172.17.211.87:8500/v1/kv/zlb_domain/a.com/127.0.0.1:80"  
 
 > 查看后端健康状态
+curl -v http://127.0.0.1/zlb_status 
 Nginx Worker PID: 20
 Upstream a.com
     Primary Peers
