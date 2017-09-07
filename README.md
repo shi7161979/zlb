@@ -1,6 +1,6 @@
 # ZLB Openresty+Consul_template 实现动态负载均衡
 
-ZLB 主要通过域名来做反向代理实现负载均衡  
+ZLB 主要通过域名来做反向代理实现负载均衡        
 ZLB 利用Openresty来做负载均衡，结合Consul_Template监听注册到Consul中的KV，从而支持分布式的负载均衡    
 ZLB 对https://github.com/shi7161979/lua-resty-upstream-healthcheck 进行了适当修改，是的其健康检查可以支持HTTP和TCP两种方式。  
 ZLB 通过容器的方式进行启动
