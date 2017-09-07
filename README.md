@@ -20,18 +20,19 @@ curl -X PUT --data="" "http://127.0.0.8500/v1/kv/zlb_domain/a.com/192.168.13.21"
 curl -X PUT "http://172.17.211.87:8500/v1/kv/zlb_domain/a.com/127.0.0.1:80"  
 
 > 查看后端健康状态
-curl -v http://127.0.0.1/zlb_status 
-Nginx Worker PID: 20
-Upstream a.com
-    Primary Peers
-        127.0.0.1:80 up 
-        192.168.13.21:80 DOWN
-    Backup Peers
+>curl -v http://127.0.0.1/zlb_status 
+>Nginx Worker PID: 20
+>Upstream a.com
+>    Primary Peers
+>        127.0.0.1:80 up 
+>        192.168.13.21:80 DOWN
+>    Backup Peers
+    
 >注入相应的后端健康检查规则
-- TCP层面健康检查
-  curl -X PUT -d '{"type":"tcp"}' "http://127.0.0.1:8500/v1/kv/zlb_healthcheck/a.com"
-- HTTP层面健康检查
- curl -X PUT -d '{"concurrency":10,"rise":2,"interval":2000,"valid_statuses":"200,404,302,301","uri":"/check","timeout":1000,"fall":3,"type":"http"}' "http://127.0.0.1:8500/v1/kv/zlb_healthcheck/a.com"
-各参数含义参考 https://github.com/shi7161979/lua-resty-upstream-healthcheck
+>- TCP层面健康检查
+>  curl -X PUT -d '{"type":"tcp"}' "http://127.0.0.1:8500/v1/kv/zlb_healthcheck/a.com"
+>- HTTP层面健康检查
+> curl -X PUT -d >'{"concurrency":10,"rise":2,"interval":2000,"valid_statuses":"200,404,302,301","uri":"/check","timeout":1000,"fall":3,"type":"http"}' >"http://127.0.0.1:8500/v1/kv/zlb_healthcheck/a.com"
+>各参数含义参考 https://github.com/shi7161979/lua-resty-upstream-healthcheck
 >带域名访问
-curl -v http://127.0.0.1/ -H "Host: a.com"
+>curl -v http://127.0.0.1/ -H "Host: a.com"
