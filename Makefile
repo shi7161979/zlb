@@ -15,8 +15,7 @@ image:
 	docker tag ${IMAGE_NAME} ${IMAGE_NAME}:${VERSION}
 
 run:	 
-	docker kill zlb_zlb
-	docker run -it --name zlb_zlb  --net="host" -d  zlb
+	docker run -it --rm  --net="host" -d  zlb
 release:
 	docker tag ${IMAGE_NAME}:${VERSION}-${GITCOMMIT} ${IMAGE_NAME}:${VERSION}
 	docker tag ${IMAGE_NAME}:${VERSION}-${GITCOMMIT} ${IMAGE_NAME}
