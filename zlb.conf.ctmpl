@@ -1,4 +1,5 @@
 lua_shared_dict healthcheck 10m;
+lua_shared_dict cookiefilter 10m;
 lua_socket_log_errors off;
 
 {{ range $key, $pairs := tree "zlb_domain" | byKey }} 
@@ -14,9 +15,22 @@ upstream {{ $key }} {
  server {
         listen 80;
         server_name {{$key}};
+        set $vhost {{$key}};
 
         location / {
-            proxy_pass http://{{$key}};
+            rewrite_by_lua '
+			local t = ngx.var.cookie_X_GRAY_TAG
+                        if t ~= nil then
+                        	local start,_ = string.find("{{$key}}",t..".")
+                        	if start ~= 1 then
+					v = ngx.shared.cookiefilter:get("{{$key}}#"..t)
+					if v == nil or v == 0 or v == "0"  then
+					    ngx.var.vhost = t..".{{$key}}"
+					end
+				end
+			end	
+            ';
+            proxy_pass http://$vhost;
             proxy_http_version 1.1;
             proxy_set_header Connection "";
         }

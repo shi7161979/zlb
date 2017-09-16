@@ -1,8 +1,1 @@
-{{ if keyExists "zlb_healthcheck" }} 
- {{ tree "zlb_healthcheck" | explode | toJSON }}
-{{ else }}
-{
- {{ range $key, $pairs := tree "zlb_domain" | byKey }}
-  "{{ $key }}":"{}",{{ end }}
-}       
-{{ end }} 
+{{ tree "zlb_healthcheck" | explode | toJSON }}

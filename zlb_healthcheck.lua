@@ -1,21 +1,37 @@
 local hc = require "resty.upstream.healthcheck"
 local cjson = require "cjson";
-local cfgfile,err = io.open("/usr/local/openresty/nginx/healthcheck.json","r");
-local jsonstr = cfgfile:read("*all");
-jsonstr = (string.gsub(jsonstr, "%s+", ""))
-jsonstr = (string.gsub(jsonstr, "\r+", ""))
-jsonstr = (string.gsub(jsonstr, "\n+", ""))
-jsonstr = (string.gsub(jsonstr, ",}", "}"))
-local content = cjson.decode(jsonstr);
-cfgfile:close();
+
+local function getJsonParas(filepath)
+    local cfgfile,err = io.open(filepath,"r");
+    local jsonstr = cfgfile:read("*all");
+    jsonstr = (string.gsub(jsonstr, "%s+", ""))
+    jsonstr = (string.gsub(jsonstr, "\r+", ""))
+    jsonstr = (string.gsub(jsonstr, "\n+", ""))
+    jsonstr = (string.gsub(jsonstr, ",}", "}")) 
+    local content = cjson.decode(jsonstr);
+    cfgfile:close();  
+    return content;
+end
 
 function string:split(sep)  
     local sep, fields = sep or ":", {}  
     local pattern = string.format("([^%s]+)", sep)  
     self:gsub(pattern, function (c) fields[#fields + 1] = c end)  
     return fields  
+end
+
+-- set cookefilter paras
+ngx.shared.cookiefilter:flush_all();
+local ckfilterpara = getJsonParas("/usr/local/openresty/nginx/cookiefilter.json");
+for name,tags in pairs(ckfilterpara) do 
+	for k,v in pairs(tags) do
+		ngx.shared.cookiefilter:set(name.."#"..k,v);
+	end
 end  
 
+-- set healthcheck paras
+local content = getJsonParas("/usr/local/openresty/nginx/healthcheck.json");
+ngx.shared.healthcheck:flush_all();
 for domain,v in pairs(content) do
      ngx.log(ngx.WARN,domain.."="..v);   
      local value = cjson.decode(v);

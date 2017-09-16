@@ -12,6 +12,8 @@ ADD zlb.conf.ctmpl /usr/local/openresty/nginx/conf.d/zlb.conf.ctmpl
 
 ADD healthcheck.json.ctmpl /usr/local/openresty/nginx/healthcheck.json.ctmpl
 
+ADD cookiefilter.json.ctmpl /usr/local/openresty/nginx/cookiefilter.json.ctmpl
+
 ADD healthcheck.lua /usr/local/openresty/lualib/resty/upstream/healthcheck.lua
 
 ADD zlb_healthcheck.lua  /usr/local/openresty/nginx/zlb_healthcheck.lua
