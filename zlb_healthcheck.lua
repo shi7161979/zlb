@@ -23,10 +23,8 @@ end
 -- set cookefilter paras
 ngx.shared.cookiefilter:flush_all();
 local ckfilterpara = getJsonParas("/usr/local/openresty/nginx/cookiefilter.json");
-for name,tags in pairs(ckfilterpara) do 
-	for k,v in pairs(tags) do
-		ngx.shared.cookiefilter:set(name.."#"..k,v);
-	end
+for domainname,filters in pairs(ckfilterpara) do 
+    ngx.shared.cookiefilter:set(domainname,cjson.encode(filters))    
 end  
 
 -- set healthcheck paras

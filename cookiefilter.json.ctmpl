@@ -1,1 +1,1 @@
-{{ tree "zlb_cookiefilter/X_GRAY_TAG" | explode | toJSON }}
+{{ tree "zlb_cookiefilter" | explode | toJSON }}

@@ -18,6 +18,8 @@ ADD healthcheck.lua /usr/local/openresty/lualib/resty/upstream/healthcheck.lua
 
 ADD zlb_healthcheck.lua  /usr/local/openresty/nginx/zlb_healthcheck.lua
 
+ADD zlb_filtercookie.lua /usr/local/openresty/nginx/zlb_filtercookie.lua
+
 ADD startup.sh restart.sh /usr/local/bin/
 
 RUN cd /usr/local/bin/ && chmod u+x startup.sh && chmod u+x restart.sh && chmod u+x consul-template
