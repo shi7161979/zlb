@@ -1,5 +1,4 @@
 lua_shared_dict healthcheck 10m;
-lua_shared_dict cookiefilter 10m;
 lua_socket_log_errors off;
 
 {{ range $key, $pairs := tree "zlb_domain" | byKey }} 

@@ -3,14 +3,17 @@ local cjson = require "cjson";
 
 local function getJsonParas(filepath)
     local cfgfile,err = io.open(filepath,"r");
-    local jsonstr = cfgfile:read("*all");
-    jsonstr = (string.gsub(jsonstr, "%s+", ""))
-    jsonstr = (string.gsub(jsonstr, "\r+", ""))
-    jsonstr = (string.gsub(jsonstr, "\n+", ""))
-    jsonstr = (string.gsub(jsonstr, ",}", "}")) 
-    local content = cjson.decode(jsonstr);
-    cfgfile:close();  
-    return content;
+    local content = {}
+    if cfgfile ~= nil then
+    	local jsonstr = cfgfile:read("*all");
+    	jsonstr = (string.gsub(jsonstr, "%s+", ""))
+    	jsonstr = (string.gsub(jsonstr, "\r+", ""))
+    	jsonstr = (string.gsub(jsonstr, "\n+", ""))
+    	jsonstr = (string.gsub(jsonstr, ",}", "}")) 
+    	content = cjson.decode(jsonstr);
+    	cfgfile:close()  
+    end 
+    return content    
 end
 
 function string:split(sep)  
@@ -21,15 +24,13 @@ function string:split(sep)
 end
 
 -- set cookefilter paras
-ngx.shared.cookiefilter:flush_all();
-local ckfilterpara = getJsonParas("/usr/local/openresty/nginx/cookiefilter.json");
-for domainname,filters in pairs(ckfilterpara) do 
-    ngx.shared.cookiefilter:set(domainname,cjson.encode(filters))    
-end  
+ckfilterpara = getJsonParas("/usr/local/openresty/nginx/cookiefilter.json");
 
 -- set healthcheck paras
 local content = getJsonParas("/usr/local/openresty/nginx/healthcheck.json");
-ngx.shared.healthcheck:flush_all();
+if ngx.shared.healthcheck ~= nil then
+  ngx.shared.healthcheck:flush_all();
+end
 for domain,v in pairs(content) do
      ngx.log(ngx.WARN,domain.."="..v);   
      local value = cjson.decode(v);

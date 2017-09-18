@@ -15,7 +15,7 @@ image:
 	docker tag ${IMAGE_NAME} ${IMAGE_NAME}:${VERSION}
 
 run:	 
-	docker run -it --rm  --net="host" ${IMAGE_NAME}:${VERSION}-${GITCOMMIT}
+	docker run -it --rm --net="host" --name zlb ${IMAGE_NAME}:${VERSION}-${GITCOMMIT}
 release:
 	docker tag ${IMAGE_NAME}:${VERSION}-${GITCOMMIT} ${IMAGE_NAME}:${VERSION}
 	docker tag ${IMAGE_NAME}:${VERSION}-${GITCOMMIT} ${IMAGE_NAME}
