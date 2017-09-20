@@ -34,35 +34,35 @@ end
 for domain,v in pairs(content) do
      ngx.log(ngx.WARN,domain.."="..v);   
      local value = cjson.decode(v);
-     local type = value["type"];
+     local type = value["Type"];
      local httpstatus = {};
      local uri = "";
-     if value["uri"] ~= nil and type == "http" and value["valid_statuses"] ~= nil then
-         uri = value["uri"]
-         httpstatus = value["valid_statuses"]:split(",")
+     if value["Uri"] ~= nil and type == "http" and value["Valid_statuses"] ~= nil then
+         uri = value["Uri"]
+         httpstatus = value["Valid_statuses"]:split(",")
      end
      if type == nil then
         type = "tcp"     
      end
      local interval = 2000;
-     if value["interval"] ~= nil then
-         interval =  tonumber(value["interval"]);
+     if value["Interval"] ~= nil then
+         interval =  tonumber(value["Interval"]);
      end
      local timeout = 1000;     
-     if value["timeout"] ~= nil then
-         timeout = tonumber(value["timeout"]);
+     if value["Timeout"] ~= nil then
+         timeout = tonumber(value["Timeout"]);
      end
      local fall = 3;
-     if value["fall"] ~= nil then
-        fall = tonumber(value["fall"]);
+     if value["Fall"] ~= nil then
+        fall = tonumber(value["Fall"]);
      end
      local rise = 2;
-     if value["rise"] ~= nil then
-        rise = tonumber(value["rise"]);
+     if value["Rise"] ~= nil then
+        rise = tonumber(value["Rise"]);
      end 
      local concurrency = 10;
-     if value["concurrency"] ~= nil then
-        concurrency = tonumber(value["concurrency"])
+     if value["Concurrency"] ~= nil then
+        concurrency = tonumber(value["Concurrency"])
      end     
 
      local ok, err = hc.spawn_checker{     
