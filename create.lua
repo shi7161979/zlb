@@ -19,7 +19,8 @@ ngx.say("lua_socket_log_errors off;\n");
 local healthchecks = {};
 local ckfilters = {};
 for domain,domainCfg in pairs(zlbcfg) do
-	local servercfg = domainCfg["server"]
+	local mainDomain = string.sub(domain,string.find(domain,"%.") + 1,-1)
+        local servercfg = domainCfg["server"]
 	local checkcfg = domainCfg["cfg"]
 	local ckfiltercfg = domainCfg["ckfilter"]
 	if ckfiltercfg ~= nil then    
@@ -39,12 +40,15 @@ for domain,domainCfg in pairs(zlbcfg) do
    			local keepalive = 10;
         		local sticky = false;
         		local healthcheck = {}
-        		if checkcfg ~=nil then
+                        if checkcfg == nil and zlbcfg[mainDomain] ~= nil then                         
+                        	checkcfg = zlbcfg[mainDomain]["cfg"]
+                        end
+			if checkcfg ~=nil then
         			local cfgnode= checkcfg[path];
         			if cfgnode == nil and path ~= "path_Lw=" then
                 			cfgnode = checkcfg["path_Lw=="]
         			end
-                        	local cfgjson = {};
+				local cfgjson = {};
         			if cfgnode ~= nil then
         		     		cfgjson = cjson.decode(cfgnode)
                 		end
