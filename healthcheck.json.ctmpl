@@ -1,1 +1,0 @@
-{{ tree "zlb_healthcheck" | explode | toJSON }}

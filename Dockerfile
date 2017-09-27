@@ -2,23 +2,17 @@ FROM openresty/openresty:centos-rpm
 
 MAINTAINER zanecloud
 
-RUN curl -o /usr/local/bin/consul-template  http://zanecloud-docker.oss-cn-shanghai.aliyuncs.com/consul-template
-
-RUN mkdir -p /usr/local/openresty/nginx/conf.d/
+RUN curl -kv -o /usr/local/bin/consul-template  http://zanecloud-docker.oss-cn-shanghai.aliyuncs.com/consul-template
 
 ADD nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
 
-ADD zlb.conf.ctmpl /usr/local/openresty/nginx/conf.d/zlb.conf.ctmpl
-
-ADD healthcheck.json.ctmpl /usr/local/openresty/nginx/healthcheck.json.ctmpl
-
-ADD cookiefilter.json.ctmpl /usr/local/openresty/nginx/cookiefilter.json.ctmpl
-
 ADD healthcheck.lua /usr/local/openresty/lualib/resty/upstream/healthcheck.lua
 
-ADD zlb_healthcheck.lua  /usr/local/openresty/nginx/zlb_healthcheck.lua
+RUN mkdir -p /opt/zlb/
 
-ADD zlb_filtercookie.lua /usr/local/openresty/nginx/zlb_filtercookie.lua
+RUN touch /opt/zlb/zlb.conf
+
+ADD create.lua zlb_filtercookie.lua zlb.json.ctmpl  /opt/zlb/
 
 ADD startup.sh restart.sh /usr/local/bin/
 
