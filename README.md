@@ -29,6 +29,7 @@ curl -X PUT --data "1" "http://127.0.0.1:8500/v1/kv/zlb/www.test2.com/ckfilter/u
 curl -X PUT --data "1" "http://127.0.0.1:8500/v1/kv/zlb/www.test2.com/ckfilter/X_GRAY_TAG/tag1"
 curl -X PUT --data "0" "http://127.0.0.1:8500/v1/kv/zlb/www.test2.com/ckfilter/X_GRAY_TAG/tag2"
 
+'path_'开头表示域名对应的path路由规则，后面串接path的Base64格式
 
 JSON 格式如下
 
