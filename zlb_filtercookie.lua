@@ -30,7 +30,7 @@ if cookiestr ~= nil then
     local i,j= string.find(cookiestr,"X_GRAY_TAG=([^;]+)") 
     if i ~= nil then
         local t = string.sub(cookiestr,i+string.len("X_GRAY_TAG="),j)       
-        local vhost = t.."."..servername
+        local vhost = t.."."..ngx.var.vhost;
         local upstream = require "ngx.upstream"
         local get_servers = upstream.get_servers
         local get_upstreams = upstream.get_upstreams
