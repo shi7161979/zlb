@@ -144,7 +144,7 @@ for domain,domainCfg in pairs(zlbcfg) do
        			ngx.say("      set $vhost   \""..upstream.."\";");
        			ngx.say("      set $vcookie \"\";");
         		ngx.say("      rewrite_by_lua_file /opt/zlb/zlb_filtercookie.lua;")
-       			ngx.say("      proxy_pass http://$vhost/;"); 
+       			ngx.say("      proxy_pass http://$vhost;"); 
                         ngx.say("      proxy_http_version 1.1;");
                         ngx.say("      proxy_set_header Host $host;");
        			ngx.say("      proxy_set_header Connection \"\";");
